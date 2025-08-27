@@ -164,33 +164,74 @@ class CraigslistScraper:
             if headless:
                 chrome_options.add_argument("--headless")
             
+            # Basic Chrome options
             chrome_options.add_argument("--no-sandbox")
             chrome_options.add_argument("--disable-dev-shm-usage")
             chrome_options.add_argument("--disable-gpu")
             chrome_options.add_argument("--window-size=1920,1080")
             chrome_options.add_argument("--user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36")
             
-            # Try local chromedriver first, then system PATH
-            driver_path = "./chromedriver"
+            # Additional options for cloud environments
+            chrome_options.add_argument("--disable-extensions")
+            chrome_options.add_argument("--disable-plugins")
+            chrome_options.add_argument("--disable-images")
+            chrome_options.add_argument("--remote-debugging-port=9222")
+            
+            # Try different Chrome/Chromium paths for cloud compatibility
             service = None
+            driver_path = "./chromedriver"
             
             if os.path.exists(driver_path):
+                # Local development
                 service = Service(driver_path)
+                st.info("Using local ChromeDriver")
             else:
-                # Try system PATH (for cloud deployments)
-                try:
-                    service = Service()  # Will use chromedriver from PATH
-                except:
-                    st.error("ChromeDriver not found. Please ensure chromedriver is available.")
-                    return None
+                # Cloud deployment - try multiple paths
+                cloud_paths = [
+                    "/usr/bin/chromedriver",  # Common Linux path
+                    "/usr/local/bin/chromedriver",  # Alternative path
+                    "chromedriver"  # System PATH
+                ]
+                
+                for path in cloud_paths:
+                    try:
+                        if path == "chromedriver":
+                            service = Service()  # Use PATH
+                        else:
+                            if os.path.exists(path):
+                                service = Service(path)
+                                break
+                    except:
+                        continue
+                
+                if service is None:
+                    # Last resort - try with chromium
+                    chrome_options.binary_location = "/usr/bin/chromium"
+                    service = Service()
+                
+                st.info("Using cloud-provided ChromeDriver")
             
             self.driver = webdriver.Chrome(service=service, options=chrome_options)
             return self.driver
             
         except Exception as e:
             st.error(f"Failed to setup Chrome driver: {e}")
-            st.error("This may be due to missing ChromeDriver or incompatible Chrome version.")
-            return None
+            st.error("Trying alternative Chrome setup for cloud environment...")
+            
+            # Fallback attempt with minimal options
+            try:
+                chrome_options = Options()
+                chrome_options.add_argument("--headless")
+                chrome_options.add_argument("--no-sandbox")
+                chrome_options.add_argument("--disable-dev-shm-usage")
+                chrome_options.binary_location = "/usr/bin/chromium"
+                
+                self.driver = webdriver.Chrome(options=chrome_options)
+                st.success("Fallback Chrome setup successful")
+                return self.driver
+            except Exception as e2:
+                st.error(f"Fallback also failed: {e2}")
+                return None
 
     def extract_listing_urls(self, search_url):
         """Extract all listing URLs from the search page"""
@@ -501,19 +542,39 @@ class FacebookMarketplaceScraper:
             chrome_options.add_argument("--disable-plugins")
             chrome_options.add_argument("--disable-images")  # Faster loading
             
-            # Try local chromedriver first, then system PATH
-            driver_path = "./chromedriver"
+            # Try different Chrome/Chromium paths for cloud compatibility
             service = None
+            driver_path = "./chromedriver"
             
             if os.path.exists(driver_path):
+                # Local development
                 service = Service(driver_path)
+                st.info("Using local ChromeDriver for Facebook")
             else:
-                # Try system PATH (for cloud deployments)
-                try:
-                    service = Service()  # Will use chromedriver from PATH
-                except:
-                    st.error("ChromeDriver not found. Please ensure chromedriver is available.")
-                    return None
+                # Cloud deployment - try multiple paths
+                cloud_paths = [
+                    "/usr/bin/chromedriver",  # Common Linux path
+                    "/usr/local/bin/chromedriver",  # Alternative path
+                    "chromedriver"  # System PATH
+                ]
+                
+                for path in cloud_paths:
+                    try:
+                        if path == "chromedriver":
+                            service = Service()  # Use PATH
+                        else:
+                            if os.path.exists(path):
+                                service = Service(path)
+                                break
+                    except:
+                        continue
+                
+                if service is None:
+                    # Last resort - try with chromium
+                    chrome_options.binary_location = "/usr/bin/chromium"
+                    service = Service()
+                
+                st.info("Using cloud-provided ChromeDriver for Facebook")
             
             self.driver = webdriver.Chrome(service=service, options=chrome_options)
             
@@ -524,8 +585,22 @@ class FacebookMarketplaceScraper:
             
         except Exception as e:
             st.error(f"Failed to setup Chrome driver: {e}")
-            st.error("This may be due to missing ChromeDriver or incompatible Chrome version.")
-            return None
+            st.error("Trying alternative Chrome setup for Facebook...")
+            
+            # Fallback attempt with minimal options
+            try:
+                chrome_options = Options()
+                chrome_options.add_argument("--headless")
+                chrome_options.add_argument("--no-sandbox")
+                chrome_options.add_argument("--disable-dev-shm-usage")
+                chrome_options.binary_location = "/usr/bin/chromium"
+                
+                self.driver = webdriver.Chrome(options=chrome_options)
+                st.success("Fallback Chrome setup successful for Facebook")
+                return self.driver
+            except Exception as e2:
+                st.error(f"Fallback also failed: {e2}")
+                return None
 
     def save_session(self):
         """Save browser cookies for session persistence"""

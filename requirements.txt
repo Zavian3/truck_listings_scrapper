@@ -1,5 +1,6 @@
 streamlit>=1.28.0
-selenium>=4.15.0
+selenium==4.15.2
+webdriver-manager>=4.0.0
 pandas>=1.5.0
 gspread>=5.10.0
 google-auth>=2.17.0
