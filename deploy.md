@@ -54,15 +54,21 @@ Click "Deploy" and wait for your app to be live!
 pip install -r requirements.txt
 ```
 
-### Download ChromeDriver
+### Download ChromeDriver (Local Only)
 1. Check your Chrome version: `chrome://version/`
 2. Download matching ChromeDriver from [chromedriver.chromium.org](https://chromedriver.chromium.org/)
 3. Place in the `truckScrapper` directory
 4. Make executable: `chmod +x chromedriver`
+5. **Note**: ChromeDriver is excluded from Git and provided by Streamlit Cloud
 
 ### Add Google Credentials
 1. Copy your `service_account.json` file to the `truckScrapper` directory
 2. **DO NOT** commit this file to Git (it's in .gitignore)
+
+### Facebook Session (Local Only)
+- If you have an existing `facebook_session.pkl`, copy it to the directory
+- This enables immediate headless Facebook scraping locally
+- **Note**: Cloud deployment will require fresh Facebook login
 
 ### Run Locally
 ```bash
@@ -101,9 +107,28 @@ streamlit run truck_listing_scraper.py
 - Try with a different search or broader criteria
 - Check if the website structure has changed
 
+### Environment Differences:
+
+**Local Development:**
+- ✅ Uses your ChromeDriver file (if present)
+- ✅ Uses your Facebook session (immediate headless mode)
+- ✅ Uses your local service_account.json
+
+**Streamlit Cloud:**
+- ✅ ChromeDriver provided by platform
+- ❌ Facebook session invalid (requires fresh login)
+- ✅ Uses secrets for Google authentication
+
 ### Getting Help:
 
 1. Check this deployment guide
 2. Review the main README.md
 3. Check Streamlit Cloud logs for errors
 4. Verify Google Cloud API permissions
+
+### First Facebook Login on Cloud:
+
+On Streamlit Cloud, Facebook scraping will require:
+1. One-time manual login in visible browser mode
+2. Session will be saved for future runs
+3. Subsequent runs can use headless mode

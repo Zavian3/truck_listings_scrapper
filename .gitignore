@@ -3,7 +3,7 @@ service_account.json
 *.pkl
 facebook_session.pkl
 
-# ChromeDriver (platform specific)
+# ChromeDriver (platform specific - provided by Streamlit Cloud)
 chromedriver*
 
 # Python

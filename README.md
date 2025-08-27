@@ -38,11 +38,13 @@ cd truckScrapper
 pip install -r requirements.txt
 ```
 
-### 3. Download ChromeDriver
+### 3. Download ChromeDriver (Local Development Only)
 1. Visit [ChromeDriver Downloads](https://chromedriver.chromium.org/)
 2. Download the version matching your Chrome browser
 3. Place the `chromedriver` executable in this directory
 4. Make executable (Mac/Linux): `chmod +x chromedriver`
+
+**Note**: ChromeDriver is automatically provided by Streamlit Cloud and excluded from Git.
 
 ### 4. Set Up Google Sheets API
 
@@ -131,8 +133,9 @@ universe_domain = "googleapis.com"
 - Follow platform terms of service
 
 ### Facebook Login
-- First run requires manual login
-- Session automatically saved for future runs
+- **Local**: Uses existing session if available, immediate headless mode
+- **Cloud**: Requires fresh login on first run (sessions don't transfer)
+- Session automatically saved for future runs in both environments
 - May need periodic re-authentication
 
 ### Troubleshooting
