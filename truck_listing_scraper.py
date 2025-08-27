@@ -889,10 +889,21 @@ def main():
     
     # App header
     st.title("🚛 Unified Truck Listing Scraper")
-    st.markdown("Extract truck listings from **Craigslist** and **Facebook Marketplace** - Create Google Sheets automatically!")
+    # Check if running on cloud environment
+    is_cloud = hasattr(st, 'secrets') or not os.path.exists('chromedriver')
     
-    # Platform selection tabs
-    tab1, tab2, tab3 = st.tabs(["🔧 Craigslist Scraper", "📱 Facebook Marketplace", "ℹ️ About"])
+    if is_cloud:
+        st.markdown("Extract truck listings from **Craigslist** - Create Google Sheets automatically!")
+        st.info("📱 Facebook Marketplace scraping is only available for local development due to login requirements.")
+    else:
+        st.markdown("Extract truck listings from **Craigslist** and **Facebook Marketplace** - Create Google Sheets automatically!")
+    
+    # Platform selection tabs - conditionally show Facebook tab
+    if is_cloud:
+        tab1, tab3 = st.tabs(["🔧 Craigslist Scraper", "ℹ️ About"])
+        tab2 = None  # Facebook not available on cloud
+    else:
+        tab1, tab2, tab3 = st.tabs(["🔧 Craigslist Scraper", "📱 Facebook Marketplace", "ℹ️ About"])
     
     # Check requirements once
     requirements_met = True
@@ -1031,16 +1042,17 @@ def main():
             else:
                 st.error("❌ Google Sheets authentication missing")
     
-    # Facebook Marketplace Tab
-    with tab2:
-        st.header("📱 Facebook Marketplace Scraper")
-        
-        col1, col2 = st.columns([2, 1])
-        
-        with col1:
-            st.markdown("### Configure Facebook Marketplace Scraping")
+    # Facebook Marketplace Tab (Local Only)
+    if tab2 is not None:
+        with tab2:
+            st.header("📱 Facebook Marketplace Scraper")
             
-            # Search URL input
+            col1, col2 = st.columns([2, 1])
+            
+            with col1:
+                st.markdown("### Configure Facebook Marketplace Scraping")
+                
+                # Search URL input
             default_facebook_url = "https://www.facebook.com/marketplace/108137335874390/search/?query=trucks&exact=false"
             facebook_url = st.text_area(
                 "Facebook Marketplace URL",

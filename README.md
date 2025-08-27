@@ -9,10 +9,11 @@ Deploy this app on Streamlit Cloud: [![Streamlit App](https://static.streamlit.i
 ## ✨ Features
 
 - **🔧 Craigslist Scraper**: Comprehensive data extraction with 15+ fields
-- **📱 Facebook Marketplace**: Smart session management with 5 focused fields  
+- **📱 Facebook Marketplace**: Smart session management with 5 focused fields *(Local development only)*
 - **📊 Google Sheets Integration**: Direct data upload with public sharing
 - **🎯 Unified Interface**: Both platforms in one clean app
 - **⚡ Real-time Progress**: Live updates and progress tracking
+- **☁️ Cloud-Ready**: Automatic platform detection for deployment
 
 ## 📋 Data Fields
 
@@ -116,6 +117,7 @@ universe_domain = "googleapis.com"
 
 ## 🎯 Usage
 
+### Local Development
 1. **Choose Platform**: Select Craigslist or Facebook Marketplace tab
 2. **Configure Settings**: 
    - Paste your search URL
@@ -124,6 +126,11 @@ universe_domain = "googleapis.com"
    - Name your Google Sheet
 3. **Start Scraping**: Click the start button
 4. **Get Results**: Receive your Google Sheet link
+
+### Cloud Deployment
+- **✅ Craigslist**: Full functionality available
+- **❌ Facebook**: Not available (manual login required)
+- **Auto-detection**: App automatically detects environment
 
 ## ⚠️ Important Notes
 

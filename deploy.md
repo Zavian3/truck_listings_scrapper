@@ -77,11 +77,19 @@ streamlit run truck_listing_scraper.py
 
 ## 📱 App Features
 
-- **Craigslist Scraper**: 15+ detailed fields per listing
-- **Facebook Marketplace**: 5 focused fields with session management
-- **Google Sheets**: Automatic creation with public sharing
-- **Cloud-Ready**: Works with or without local ChromeDriver
-- **Secure**: Supports both local files and cloud secrets
+### Cloud Deployment (Streamlit Cloud)
+- **✅ Craigslist Scraper**: 15+ detailed fields per listing
+- **❌ Facebook Marketplace**: Not available (requires manual browser login)
+- **✅ Google Sheets**: Automatic creation with public sharing
+- **✅ ChromeDriver**: Provided by Streamlit Cloud
+- **✅ Secure**: Uses cloud secrets for authentication
+
+### Local Development
+- **✅ Craigslist Scraper**: Full functionality
+- **✅ Facebook Marketplace**: 5 focused fields with session management
+- **✅ Google Sheets**: Automatic creation with public sharing
+- **✅ ChromeDriver**: Local file or system PATH
+- **✅ Secure**: Supports both local files and cloud secrets
 
 ## 🎯 Usage Tips
 
